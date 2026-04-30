@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Strawwberry Cafe</title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <div class="game_container">
+      <div
+        id="coffeeCanvas"
+        style="width: 900px; height: 550px"
+        class="game_screen"
+      >
+        <div id="front_desk"></div>
+        <div id="back_desk">
+          <button class="check_coffee_btn">проверить содержимое стакана</button>
+          <!-- кофеварка -->
+          <div id="coffee_maker">
+            <button class="maker_btn btn">1</button>
+          </div>
+          <!-- кофемолка -->
+          <div id="coffee_grinder">
+            <button class="grinder_btn btn">2</button>
+          </div>
+          <!-- темпер -->
+          <div id="tamper" class="tamper">
+            <button class="tamper_btn btn">3</button>
+          </div>
+          <div id="holder" class="holder" draggable="true"></div>
+          <!-- пустые стаканы -->
+          <div id="cups_container">
+            <div id="cup" class="cup" draggable="true"></div>
+            <div class="milk_box" draggable="true"></div>
+          </div>
+        </div>
+        <div id="serving_zone"></div>
+      </div>
+      <footer>Strawwbery Cafe | cozy & chill</footer>
+    </div>
+    <script src="main.js"></script>
+  </body>
+</html>

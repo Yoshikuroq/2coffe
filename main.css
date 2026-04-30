@@ -1,0 +1,220 @@
+/* body {
+  padding: 0;
+  margin: 0;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+#container {
+  background-color: #212228;
+  background-image: linear-gradient(#292a30 0.1em, transparent 0.1em),
+    linear-gradient(90deg, #292a30 0.1em, transparent 0.1em);
+  background-size: 4em 4em;
+  height: 100vh;
+}
+
+#card {
+  width: 300px;
+  height: 300px;
+  background-color: #afda9f;
+  border-radius: 5px;
+  cursor: pointer;
+  position: fixed;
+}
+
+#canvas {
+  background-color: #212228;
+} */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none; /* чтобы не выделялся текст при перетаскивании */
+}
+
+body {
+  background: #2b1e0f;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: system-ui, "Segoe UI", sans-serif;
+}
+
+.game_container {
+  background: #5a3e1b;
+  padding: 20px;
+  border-radius: 24px;
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.3);
+}
+
+.game_screen {
+  display: block;
+  margin: 0 auto;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  cursor: grab;
+  border-radius: 12px;
+  background-image: url(./img/main_assets/backside.png);
+}
+
+footer {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 14px;
+  color: #c7a55b;
+}
+
+#back_desk {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* кофейные приборы ----------------------------------- */
+
+#coffee_maker,
+#coffee_grinder,
+#tamper,
+#cups_container {
+  border: 2px solid white;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  margin-bottom: 65px;
+}
+
+#coffee_maker {
+  width: 120px;
+  height: 100px;
+  margin-left: 55px;
+  background-color: rgb(75, 69, 69);
+}
+
+#coffee_grinder {
+  width: 80px;
+  height: 100px;
+  margin-left: 220px;
+}
+
+#cups_container {
+  width: 150px;
+  height: 50px;
+  margin-left: 500px;
+  contain: content;
+  display: flex;
+  gap: 10px;
+}
+
+#tamper {
+  width: 50px;
+  height: 30px;
+  margin-left: 375px;
+}
+
+#holder {
+  width: 20px;
+  height: 20px;
+}
+
+.cup {
+  width: 20px;
+  height: 50px;
+  background-color: rgb(236, 132, 132);
+  border: 2px solid red;
+  border-style: dashed;
+}
+
+.milk_box {
+  width: 20px;
+  height: 50px;
+  background-color: rgb(132, 236, 179);
+  border: 2px solid rgb(0, 49, 45);
+  border-style: dashed;
+}
+
+/* -------------------------------- */
+
+.holder {
+  background-color: #2b1e0f;
+  border: 2px solid white;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.holder_in_maker {
+  background-color: #2b1e0f;
+  border: 2px solid white;
+  position: absolute;
+  bottom: 80%;
+  left: 47px;
+}
+
+.holder_in_grinder {
+  background-color: #2b1e0f;
+  border: 2px solid white;
+  position: absolute;
+  left: 28px;
+  bottom: 10%;
+}
+
+.holder_in_tamper {
+  background-color: #2b1e0f;
+}
+
+.cup_in_maker {
+  width: 20px;
+  height: 50px;
+  background-color: rgb(236, 132, 132);
+  border: 2px solid red;
+  border-style: dashed;
+  position: absolute;
+  left: 47px;
+  bottom: 0;
+}
+
+.cup_filled {
+  background-color: rgb(136, 218, 136);
+  border: 2px solid green;
+  border-style: dashed;
+}
+
+.limited {
+  display: flex;
+  flex-direction: column;
+}
+
+.btn {
+  width: 20px;
+  height: 20px;
+  border-style: none;
+  border-radius: 10px;
+}
+
+.btn:hover {
+  background-color: #87e25d;
+  transition: 0.1s ease-out;
+}
+
+.tamper_btn {
+  margin-left: 25px;
+}
+
+#serving_zone {
+  width: 200px;
+  height: 250px;
+  border: 2px solid white;
+  position: absolute;
+  top: 0;
+  margin-left: 100px;
+  margin-top: 100px;
+}
+
+.hover_effect {
+  background-color: #87e25d;
+  transition: all 0.2s;
+}
