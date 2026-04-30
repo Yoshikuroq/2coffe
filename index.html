@@ -17,9 +17,10 @@
         <div id="front_desk" class="front_desk">
           <div id="serving_zone"></div>
           <button id="toBackBtn"></button>
+          <div id="table_frontDesk"></div>
+          <div id="transfer_toBack"></div>
         </div>
         <div id="back_desk" class="back_desk">
-          <button class="check_coffee_btn">проверить содержимое стакана</button>
           <!-- кофеварка -->
           <div id="coffee_maker">
             <button class="maker_btn btn">1</button>
@@ -32,12 +33,18 @@
           <div id="tamper" class="tamper">
             <button class="tamper_btn btn">3</button>
           </div>
-          <div id="holder" class="holder" draggable="true"></div>
+
           <!-- пустые стаканы -->
           <div id="cups_container">
             <div id="cup" class="cup" draggable="true"></div>
             <div class="milk_box" draggable="true"></div>
           </div>
+          <!-- стол на стойке сзади -->
+          <div id="table_backDesk">
+            <div id="holder" class="holder" draggable="true"></div>
+          </div>
+          <!-- зона перетаскивания -->
+          <div id="transfer_toFront"></div>
           <button id="toFrontBtn"></button>
         </div>
       </div>

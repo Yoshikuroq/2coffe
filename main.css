@@ -331,3 +331,52 @@ footer {
   top: -70%;
   left: -20%;
 }
+
+#table_backDesk,
+#table_frontDesk {
+  position: absolute;
+  height: 50px;
+  width: 300px;
+  border: 2px solid white;
+  bottom: 0px;
+  left: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#table_frontDesk {
+  margin-bottom: 30px;
+}
+
+.cup_on_table {
+  position: relative;
+}
+
+.holder_on_table {
+  position: relative;
+}
+
+#transfer_toFront {
+  position: absolute;
+  height: 50px;
+  width: 300px;
+  border: 2px solid white;
+  top: 0px;
+  left: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#transfer_toBack {
+  position: absolute;
+  height: 25px;
+  width: 300px;
+  border: 2px solid white;
+  bottom: 0px;
+  left: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -21,9 +21,16 @@ function tamp_coffee() {
 }
 
 function make_coffee() {
-  if (cup.parentNode.id === "coffee_maker" && holder_obj.isEmpty === false) {
+  if (
+    // вот меня бесит этот кусок кода с условием
+    cup.parentNode.id === "coffee_maker" &&
+    holder.parentNode.id === "coffee_maker" &&
+    holder_obj.isEmpty === false &&
+    holder_obj.isCoffeeTampered == true
+  ) {
     cup.classList.add("cup_filled");
     cup_obj.contains.push("кофе");
+    cup_obj.checkCoffee();
   }
 
   if (holder.parentNode.id === "coffee_maker") {
@@ -44,6 +51,8 @@ const holder_obj = {
 const cup_obj = {
   currentDrink: "",
   contains: [],
+  checkCoffee, // ссылка на функцию
+  resetCup,
 };
 
 // массив доступных кофе для приготовления
@@ -141,22 +150,25 @@ function drop() {
       break;
     case "cup":
       cup_obj.contains.push("молоко");
+      cup_obj.checkCoffee();
       break;
     case "serving_zone":
-      if (currentCustomer.currentOrder === cup_obj.currentDrink) {
-        console.log("Правильный напиток!");
-        getRandomCustomerForDay(today);
-      } else {
-        console.log("Неправильный напиток!");
-        getRandomCustomerForDay(today);
-      }
-      serving_zone.classList.remove("hover_effect");
+      giveTo_servingZone();
+      break;
+    case "table_backDesk":
+      putOn_table_backDesk(draggedElement);
+      break;
+    case "transfer_toFront":
+      if (draggedElement === "cup") table_frontDesk.append(cup);
+      break;
+    case "transfer_toBack":
+      if (draggedElement === "cup") table_backDesk.append(cup);
       break;
   }
 }
 // ------------------------------------------------------------------------
 
-// сохранение приборов в массиве, что бы дать им события
+// сохранение приборов в массиве, что бы дать им события (дополнить в будущем по возможности)
 const obj = [coffee_maker, coffee_grinder, tamper];
 
 // раздача событий на каждый прибор
@@ -166,9 +178,8 @@ for (let i = 0; i < obj.length; i++) {
   object.addEventListener("dragover", dragOver);
   object.addEventListener("drop", drop);
 }
-// console.log("изначальное состояние (холдер)", holder_obj);
 
-// функции для вставления перетаскиваемого объекта в приборы -----------
+// функции для вставления перетаскиваемого объекта  -----------
 function putIn_coffeeMaker(object) {
   if (object === "holder") {
     if (
@@ -210,7 +221,39 @@ function putIn_tamper(object) {
     }
   }
 }
+
+function giveTo_servingZone() {
+  if (currentCustomer.currentOrder === cup_obj.currentDrink) {
+    console.log("Правильный напиток!");
+    getRandomCustomerForDay(today);
+    cup_obj.resetCup();
+  } else {
+    console.log("Неправильный напиток!");
+    getRandomCustomerForDay(today);
+    cup_obj.resetCup();
+  }
+  serving_zone.classList.remove("hover_effect"); // убрать в будущем
+}
+
+function putOn_table_backDesk(object) {
+  if (object === "cup") {
+    cup.classList = "cup_on_table";
+    table_backDesk.append(cup);
+  } else if (object === "holder") {
+    holder.classList = "holder_on_table";
+    table_backDesk.append(holder);
+  }
+}
+
 //  -------------------------------------------------------------
+
+function resetCup() {
+  cup_obj.currentDrink = "";
+  cup_obj.contains = [];
+  document.getElementById("cups_container").append(cup);
+}
+
+//
 
 // Получаем back_desk
 const backDesk = document.getElementById("back_desk");
@@ -296,17 +339,14 @@ serving_zone.addEventListener("drop", drop);
 
 function servingZone_dragEnter(e) {
   e.preventDefault();
-  serving_zone.classList.add("hover_effect");
+  serving_zone.classList.add("hover_effect"); // убрать в будущем
 }
 
 function servingZone_dragLeave() {
-  serving_zone.classList.remove("hover_effect");
+  serving_zone.classList.remove("hover_effect"); // убрать в будущем
 }
 
-const checkCoffeeBtn = document.querySelector(".check_coffee_btn");
-checkCoffeeBtn.addEventListener("click", checkCoffee);
-
-// проверка кофе
+// функция проверки кофе
 function checkCoffee() {
   let foundCoffee = null;
 
@@ -336,7 +376,7 @@ function checkCoffee() {
 
     console.log(`Приготовлен: ${foundCoffee.name}`);
   } else {
-    console.log(`Неизвестный напиток!ё  `);
+    console.log(`Неизвестный напиток!`);
   }
 }
 
@@ -370,16 +410,30 @@ document.getElementById("toBackBtn").addEventListener("click", switchToBack);
 // цели -- идеи
 
 // draggable = false , когда холдер в процессе действия
-// переход между меню с помощью класса hidden
 // можно на все нижнее поле добавить див стола, который центтрирует на себе холдер/стакан (или оставляет где есть)
 
-// 1. сделать так чтобы стакан можно было ставить на доску
-// 2. сделать нормальную проверку на приготовленный кофе
-// 5. перенести напиток на фронт деск из бек деск
-// -- сделать перетаскиваемую зону сверху на бек деске
-// -- удалить ребенка стакан бек деск
-// -- добавить ребенка стакан фронт деск
 // 6. добавить перетаскиваемый темпер и функционал для него
+// ! ОШИБКА: при перетаскивании холдера и стакана в приборы им почему-то не присваиваются новые классы =>
+// ! ОШИБКА: => или: новый класс даётся, но что-то обнуляет класс
 
-// кнопки для переключения на бэк и фронт деск добавлены. правда находясь в бек деск,
-// кнопка на фронт деск выглядит как-то убого (p.s. навести на верхний правый угол находясь в бек деск)
+const table_backDesk = document.getElementById("table_backDesk");
+table_backDesk.addEventListener("dragover", dragOver);
+table_backDesk.addEventListener("drop", drop);
+
+const table_frontDesk = document.getElementById("table_frontDesk");
+
+const transfer_toFront = document.getElementById("transfer_toFront");
+transfer_toFront.addEventListener("dragover", dragOver);
+transfer_toFront.addEventListener("drop", drop);
+
+const transfer_toBack = document.getElementById("transfer_toBack");
+transfer_toBack.addEventListener("dragover", dragOver);
+transfer_toBack.addEventListener("drop", drop);
+
+// ! кнопки для переключения на бэк и фронт деск добавлены. правда находясь в бек деск,
+// ! кнопка на фронт деск выглядит как-то убого (p.s. навести на верхний правый угол находясь в бек деск)
+
+// может быть как-то коментариями разделить классы в css для удобного понимания? или как-нибудь сгруппировать
+// посмотреть можно ли оптимизировать присваивание событий для объектов
+// update: это можно сделать при финальном рефакторинге, сейчас нет смысла т.к. все равно классы будут меняться
+// 9. добавить комементарии ко всему: можно так же сделать при рефакторинге или после готового MVP
