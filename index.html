@@ -14,8 +14,11 @@
         style="width: 900px; height: 550px"
         class="game_screen"
       >
-        <div id="front_desk"></div>
-        <div id="back_desk">
+        <div id="front_desk" class="front_desk">
+          <div id="serving_zone"></div>
+          <button id="toBackBtn"></button>
+        </div>
+        <div id="back_desk" class="back_desk">
           <button class="check_coffee_btn">проверить содержимое стакана</button>
           <!-- кофеварка -->
           <div id="coffee_maker">
@@ -35,8 +38,8 @@
             <div id="cup" class="cup" draggable="true"></div>
             <div class="milk_box" draggable="true"></div>
           </div>
+          <button id="toFrontBtn"></button>
         </div>
-        <div id="serving_zone"></div>
       </div>
       <footer>Strawwbery Cafe | cozy & chill</footer>
     </div>

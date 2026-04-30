@@ -1,36 +1,8 @@
-/* body {
-  padding: 0;
-  margin: 0;
-  overflow-x: hidden;
-  overflow-y: hidden;
-}
-
-#container {
-  background-color: #212228;
-  background-image: linear-gradient(#292a30 0.1em, transparent 0.1em),
-    linear-gradient(90deg, #292a30 0.1em, transparent 0.1em);
-  background-size: 4em 4em;
-  height: 100vh;
-}
-
-#card {
-  width: 300px;
-  height: 300px;
-  background-color: #afda9f;
-  border-radius: 5px;
-  cursor: pointer;
-  position: fixed;
-}
-
-#canvas {
-  background-color: #212228;
-} */
-
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  user-select: none; /* чтобы не выделялся текст при перетаскивании */
+  user-select: none;
 }
 
 body {
@@ -43,6 +15,7 @@ body {
 }
 
 .game_container {
+  position: relative;
   background: #5a3e1b;
   padding: 20px;
   border-radius: 24px;
@@ -50,12 +23,15 @@ body {
 }
 
 .game_screen {
+  position: relative;
   display: block;
   margin: 0 auto;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
   cursor: grab;
   border-radius: 12px;
-  background-image: url(./img/main_assets/backside.png);
+  overflow: hidden;
+  width: 900px;
+  height: 550px;
 }
 
 footer {
@@ -65,16 +41,51 @@ footer {
   color: #c7a55b;
 }
 
+/* Слои для передней и задней стойки */
+.front_desk,
+.back_desk {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.4s ease-in-out;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.front_desk {
+  background-image: url(./img/main_assets/Sprite-1.png);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.back_desk {
+  background-image: url(./img/main_assets/backside.png);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Состояния */
+.front_desk.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.back_desk.inactive {
+  opacity: 0;
+  pointer-events: none;
+}
+
 #back_desk {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
   position: relative;
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
-
-/* кофейные приборы ----------------------------------- */
 
 #coffee_maker,
 #coffee_grinder,
@@ -135,8 +146,6 @@ footer {
   border: 2px solid rgb(0, 49, 45);
   border-style: dashed;
 }
-
-/* -------------------------------- */
 
 .holder {
   background-color: #2b1e0f;
@@ -217,4 +226,108 @@ footer {
 .hover_effect {
   background-color: #87e25d;
   transition: all 0.2s;
+}
+
+/* кнопки переключения между досками */
+
+/* для кнопки перехода на заднюю доску */
+
+#toBackBtn {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  width: 50px;
+  height: 50px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+#toBackBtn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(241, 35, 20, 0) 0%,
+    rgba(255, 20, 4, 0) 100%
+  );
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+#toBackBtn:hover {
+  opacity: 1;
+}
+
+#toBackBtn:hover::before {
+  background: radial-gradient(
+    circle,
+    rgba(135, 226, 93, 0.9) 0%,
+    rgba(135, 226, 93, 0.6) 30%,
+    rgba(135, 226, 93, 0.2) 60%,
+    transparent 100%
+  );
+  transform: scale(1);
+  width: 200%;
+  height: 200%;
+  top: -25%;
+  left: -25%;
+}
+
+/* для кнопки перехода на переднюю доску */
+
+#toFrontBtn {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: 50px;
+  height: 50px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.2s;
+}
+
+#toFrontBtn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(241, 35, 20, 0) 0%,
+    rgba(255, 20, 4, 0) 100%
+  );
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+#toFrontBtn:hover {
+  opacity: 1;
+}
+
+#toFrontBtn:hover::before {
+  background: radial-gradient(
+    circle,
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(34, 51, 25, 0.6) 30%,
+    rgba(87, 133, 65, 0.2) 60%,
+    transparent 100%
+  );
+  transform: scale(1);
+  width: 200%;
+  height: 200%;
+  top: -70%;
+  left: -20%;
 }
