@@ -262,7 +262,7 @@ function getRandomCustomerForDay(day) {
   // выбор случайного клиента из доступных
   const randomIndex = getRandomNumber(0, availableCustomers.length - 1);
   let selectedCustomer = availableCustomers[randomIndex];
-  selectedCustomer.wasToday = true;
+  selectedCustomer.wasToday = false;
   const order = selectedCustomer.makeOrder();
   console.log(`Сегодняшний день: ${today}`);
   console.log(`Клиент: ${selectedCustomer.name}, Заказ: ${order}`);
