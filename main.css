@@ -89,7 +89,7 @@ footer {
 
 #coffee_maker,
 #coffee_grinder,
-#tamper,
+#tamper_zone,
 #cups_container {
   border: 2px solid white;
   position: absolute;
@@ -120,7 +120,7 @@ footer {
   gap: 10px;
 }
 
-#tamper {
+#tamper_zone {
   width: 50px;
   height: 30px;
   margin-left: 375px;
@@ -171,7 +171,7 @@ footer {
   bottom: 10%;
 }
 
-.holder_in_tamper {
+.holder_in_tamper_zone {
   background-color: #2b1e0f;
 }
 
@@ -207,10 +207,6 @@ footer {
 .btn:hover {
   background-color: #87e25d;
   transition: 0.1s ease-out;
-}
-
-.tamper_btn {
-  margin-left: 25px;
 }
 
 #serving_zone {
@@ -350,10 +346,12 @@ footer {
 }
 
 .cup_on_table {
+  /*не используется*/
   position: relative;
 }
 
 .holder_on_table {
+  /*не используется*/
   position: relative;
 }
 
@@ -379,4 +377,12 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.tamper {
+  width: 20px;
+  height: 30px;
+  border: 2px solid white;
+  margin-left: 25px;
+  background-color: #26413e;
 }

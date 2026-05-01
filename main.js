@@ -14,8 +14,8 @@ function grind_coffee() {
   }
 }
 
-function tamp_coffee() {
-  if (holder.parentNode.id === "tamper") {
+function tamp_coffee(object) {
+  if (holder.parentNode.id === "tamper_zone" && object === "tamper") {
     holder_obj.isCoffeeTampered = true;
   }
 }
@@ -78,7 +78,7 @@ let draggedElement = null;
 
 const holder = document.querySelector(".holder");
 const cup = document.querySelector(".cup");
-const tamper = document.getElementById("tamper");
+const tamper_zone = document.getElementById("tamper_zone");
 const coffee_maker = document.getElementById("coffee_maker");
 const coffee_grinder = document.getElementById("coffee_grinder");
 
@@ -86,23 +86,32 @@ const coffee_grinder = document.getElementById("coffee_grinder");
 const grinder_btn = document.querySelector(".grinder_btn");
 grinder_btn.addEventListener("click", grind_coffee);
 
-const tamper_btn = document.querySelector(".tamper_btn");
-tamper_btn.addEventListener("click", tamp_coffee);
-
 const maker_btn = document.querySelector(".maker_btn");
 maker_btn.addEventListener("click", make_coffee);
+
+let dropSuccess = false; // флаг перемещения
 
 // добавление событий на начало перетаскивания и на конец
 holder.addEventListener("dragstart", dragStart);
 holder.addEventListener("dragend", dragEnd);
+holder.addEventListener("dragover", dragOver);
+holder.addEventListener("drop", drop);
+
+// функции стакана
 cup.addEventListener("dragstart", dragStart);
 cup.addEventListener("dragend", dragEnd);
+cup.addEventListener("dragover", dragOver);
+cup.addEventListener("drop", drop);
 
 // молоко
 const milk_box = document.querySelector(".milk_box");
+milk_box.addEventListener("dragstart", dragStart);
+milk_box.addEventListener("dragend", dragEnd);
 
-cup.addEventListener("dragover", dragOver);
-cup.addEventListener("drop", drop);
+// темпер
+const tamper = document.getElementById("tamper");
+tamper.addEventListener("dragstart", dragStart);
+tamper.addEventListener("dragend", dragEnd);
 
 // функции перетаскиваемых объектов -------------------------
 function dragStart() {
@@ -110,6 +119,10 @@ function dragStart() {
     draggedElement = "cup";
   } else if (this.classList.contains("holder")) {
     draggedElement = "holder";
+  } else if (this.classList.contains("milk_box")) {
+    draggedElement = "milk_box";
+  } else if (this.classList.contains("tamper")) {
+    draggedElement = "tamper";
   }
   setTimeout(() => ((this.className = "invisible"), 0));
 }
@@ -119,6 +132,10 @@ function dragEnd() {
     this.classList = "holder";
   } else if (draggedElement === "cup") {
     this.classList = "cup";
+  } else if (draggedElement === "milk_box") {
+    this.classList = "milk_box";
+  } else if (draggedElement === "tamper") {
+    this.classList = "tamper";
   }
 
   this.classList.remove("invisible"); // убираем invisible если есть
@@ -145,12 +162,14 @@ function drop() {
     case "coffee_grinder":
       putIn_coffeeGrinder(draggedElement);
       break;
-    case "tamper":
-      putIn_tamper(draggedElement);
+    case "tamper_zone":
+      putIn_tamper_zone(draggedElement);
       break;
     case "cup":
-      cup_obj.contains.push("молоко");
-      cup_obj.checkCoffee();
+      PutIn_milk(draggedElement);
+      break;
+    case "holder":
+      tamp_coffee(draggedElement);
       break;
     case "serving_zone":
       giveTo_servingZone();
@@ -169,7 +188,7 @@ function drop() {
 // ------------------------------------------------------------------------
 
 // сохранение приборов в массиве, что бы дать им события (дополнить в будущем по возможности)
-const obj = [coffee_maker, coffee_grinder, tamper];
+const obj = [coffee_maker, coffee_grinder, tamper_zone];
 
 // раздача событий на каждый прибор
 for (let i = 0; i < obj.length; i++) {
@@ -209,15 +228,15 @@ function putIn_coffeeGrinder(object) {
   }
 }
 
-function putIn_tamper(object) {
+function putIn_tamper_zone(object) {
   if (object === "holder") {
     if (
       holder_obj.isEmpty === false &&
       holder_obj.isCoffeeTampered === false &&
       draggedElement === "holder"
     ) {
-      holder.classList = "holder_in_tamper";
-      tamper.append(holder);
+      holder.classList = "holder_in_tamper_zone";
+      tamper_zone.append(holder);
     }
   }
 }
@@ -237,11 +256,18 @@ function giveTo_servingZone() {
 
 function putOn_table_backDesk(object) {
   if (object === "cup") {
-    cup.classList = "cup_on_table";
+    cup.classList = "cup_on_table"; // не используется
     table_backDesk.append(cup);
   } else if (object === "holder") {
-    holder.classList = "holder_on_table";
+    holder.classList = "holder_on_table"; // не используется
     table_backDesk.append(holder);
+  }
+}
+
+function PutIn_milk(object) {
+  if (object === "milk_box") {
+    cup_obj.contains.push("молоко");
+    cup_obj.checkCoffee();
   }
 }
 
@@ -376,7 +402,7 @@ function checkCoffee() {
 
     console.log(`Приготовлен: ${foundCoffee.name}`);
   } else {
-    console.log(`Неизвестный напиток!`);
+    console.log(`Содержимое стакана: ${cup_obj.contains}`);
   }
 }
 
@@ -407,15 +433,6 @@ function switchToBack() {
 document.getElementById("toFrontBtn").addEventListener("click", switchToFront);
 document.getElementById("toBackBtn").addEventListener("click", switchToBack);
 
-// цели -- идеи
-
-// draggable = false , когда холдер в процессе действия
-// можно на все нижнее поле добавить див стола, который центтрирует на себе холдер/стакан (или оставляет где есть)
-
-// 6. добавить перетаскиваемый темпер и функционал для него
-// ! ОШИБКА: при перетаскивании холдера и стакана в приборы им почему-то не присваиваются новые классы =>
-// ! ОШИБКА: => или: новый класс даётся, но что-то обнуляет класс
-
 const table_backDesk = document.getElementById("table_backDesk");
 table_backDesk.addEventListener("dragover", dragOver);
 table_backDesk.addEventListener("drop", drop);
@@ -430,10 +447,19 @@ const transfer_toBack = document.getElementById("transfer_toBack");
 transfer_toBack.addEventListener("dragover", dragOver);
 transfer_toBack.addEventListener("drop", drop);
 
-// ! кнопки для переключения на бэк и фронт деск добавлены. правда находясь в бек деск,
-// ! кнопка на фронт деск выглядит как-то убого (p.s. навести на верхний правый угол находясь в бек деск)
+// цели -- идеи
+// 2. добавить комементарии ко всему
+// 3. посмотреть можно ли оптимизировать присваивание событий для объектов (foreach)
 
-// может быть как-то коментариями разделить классы в css для удобного понимания? или как-нибудь сгруппировать
-// посмотреть можно ли оптимизировать присваивание событий для объектов
-// update: это можно сделать при финальном рефакторинге, сейчас нет смысла т.к. все равно классы будут меняться
-// 9. добавить комементарии ко всему: можно так же сделать при рефакторинге или после готового MVP
+// ! (визуальная)ОШИБКА: что-то обнуляет класс при добавлении объектов в приборы
+// update: проблема найдена, но не решена (dragend срабатывает после drop)
+
+// на будущее: на стойку сзади можно добавить кнопку в виде книги -> это будет туториал по игре
+// draggable = false , когда холдер в процессе действия
+// сделать общую функциб перетаскивания объекта в прибор (идея)
+// вид: moveTo([объект], [куда], [класс_объекта(для сравнения)])
+
+// changelog
+// исправил непредвиденную ошибку с добавлением молока
+// убрал кнопку которая выполняла функцию темпера
+// добавил темпер и функционал ему
