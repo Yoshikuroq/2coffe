@@ -11,12 +11,14 @@ function getRandomNumber(min, max) {
 function grind_coffee() {
   if (holder.parentNode.id === "coffee_grinder") {
     holder_obj.isEmpty = false;
+    holder.src = "./img/main_assets/holder_withCoffee.png";
   }
 }
 
 function tamp_coffee(object) {
   if (holder.parentNode.id === "tamper_zone" && object === "tamper") {
     holder_obj.isCoffeeTampered = true;
+    holder.src = "./img/main_assets/holder_tampered.png";
   }
 }
 
@@ -36,6 +38,7 @@ function make_coffee() {
   if (holder.parentNode.id === "coffee_maker") {
     holder_obj.isEmpty = true;
     holder_obj.isCoffeeTampered = false;
+    holder.src = "./img/main_assets/holder_empty.png";
   }
 }
 
@@ -114,7 +117,20 @@ tamper.addEventListener("dragstart", dragStart);
 tamper.addEventListener("dragend", dragEnd);
 
 // функции перетаскиваемых объектов -------------------------
-function dragStart() {
+// function dragStart() {
+//   if (this.classList.contains("cup")) {
+//     draggedElement = "cup";
+//   } else if (this.classList.contains("holder")) {
+//     draggedElement = "holder";
+//   } else if (this.classList.contains("milk_box")) {
+//     draggedElement = "milk_box";
+//   } else if (this.classList.contains("tamper")) {
+//     draggedElement = "tamper";
+//   }
+//   setTimeout(() => ((this.className = "invisible"), 0));
+// }
+
+function dragStart(e) {
   if (this.classList.contains("cup")) {
     draggedElement = "cup";
   } else if (this.classList.contains("holder")) {
@@ -124,7 +140,16 @@ function dragStart() {
   } else if (this.classList.contains("tamper")) {
     draggedElement = "tamper";
   }
-  setTimeout(() => ((this.className = "invisible"), 0));
+
+  // // кастомная картинка
+  // const img = new Image();
+  // img.src = "./img/main_assets/cup.png";
+
+  // e.dataTransfer.setDragImage(img, 25, 25);
+
+  // setTimeout(() => {
+  //   this.classList.add("invisible");
+  // }, 0);
 }
 
 function dragEnd() {
@@ -210,7 +235,7 @@ function putIn_coffeeMaker(object) {
       coffee_maker.append(holder);
     }
   } else if (object === "cup") {
-    cup.classList = "cup_in_maker";
+    // cup.classList = "cup_in_maker";
     coffee_maker.append(cup);
   }
 }
@@ -243,11 +268,11 @@ function putIn_tamper_zone(object) {
 
 function giveTo_servingZone() {
   if (currentCustomer.currentOrder === cup_obj.currentDrink) {
-    console.log("Правильный напиток!");
+    console.log("Правильный напиток! =======================");
     getRandomCustomerForDay(today);
     cup_obj.resetCup();
   } else {
-    console.log("Неправильный напиток!");
+    console.log("Неправильный напиток! =====================");
     getRandomCustomerForDay(today);
     cup_obj.resetCup();
   }
@@ -256,7 +281,7 @@ function giveTo_servingZone() {
 
 function putOn_table_backDesk(object) {
   if (object === "cup") {
-    cup.classList = "cup_on_table"; // не используется
+    // cup.classList = "cup_on_table"; // не используется
     table_backDesk.append(cup);
   } else if (object === "holder") {
     holder.classList = "holder_on_table"; // не используется
@@ -420,13 +445,13 @@ function arraysEqual(arr1, arr2) {
 const frontDesk = document.querySelector(".front_desk");
 
 function switchToFront() {
-  frontDesk.classList.add("active");
-  backDesk.classList.add("inactive");
+  backDesk.classList.remove("active");
+  frontDesk.classList.remove("inactive");
 }
 
 function switchToBack() {
-  frontDesk.classList.remove("active");
-  backDesk.classList.remove("inactive");
+  backDesk.classList.add("active");
+  frontDesk.classList.add("inactive");
 }
 
 // кнопки для переключения между стойками
@@ -451,15 +476,30 @@ transfer_toBack.addEventListener("drop", drop);
 // 2. добавить комементарии ко всему
 // 3. посмотреть можно ли оптимизировать присваивание событий для объектов (foreach)
 
-// ! (визуальная)ОШИБКА: что-то обнуляет класс при добавлении объектов в приборы
-// update: проблема найдена, но не решена (dragend срабатывает после drop)
-
 // на будущее: на стойку сзади можно добавить кнопку в виде книги -> это будет туториал по игре
 // draggable = false , когда холдер в процессе действия
 // сделать общую функциб перетаскивания объекта в прибор (идея)
 // вид: moveTo([объект], [куда], [класс_объекта(для сравнения)])
 
+// создать визуальный эффект при наведении на зону переноса стакана между досками
+
+// дать пользователю "вылить" содержимое стакана
+// сделать проверку что бы нельзя было налить несколько раз кофе или молока
+
+// w🍓w
+
+// нужно написать список ассетов которые нужно нарисовать
+
+// стакан
+// 1 - пустой
+// 2 - эспрессо
+// 3 - капучино
+// 4 - латте
+// 5 - с молоком
+// кофеварка, темпер, поднос для стакана и молока
+
 // changelog
-// исправил непредвиденную ошибку с добавлением молока
-// убрал кнопку которая выполняла функцию темпера
-// добавил темпер и функционал ему
+// сделал так, что бы при влкючении страницы сначала показывалась передняя доска
+// странное увеличиение картинки при перемещении убрано
+// решение для проблемы с классами найдено
+// добавлены ассеты для кофемолки и всех состояний холдера
