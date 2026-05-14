@@ -83,6 +83,7 @@ const cup = document.querySelector(".cup");
 const tamper_zone = document.getElementById("tamper_zone");
 const coffee_maker = document.getElementById("coffee_maker");
 const coffee_grinder = document.getElementById("coffee_grinder");
+const cups_container = document.getElementById("cups_container");
 
 // кнопки
 const grinder_btn = document.querySelector(".grinder_btn");
@@ -98,6 +99,10 @@ holder.addEventListener("dragstart", dragStart);
 holder.addEventListener("dragend", dragEnd);
 holder.addEventListener("dragover", dragOver);
 holder.addEventListener("drop", drop);
+
+// функции контейнера стакана и молока
+cups_container.addEventListener("drop", drop);
+cups_container.addEventListener("dragover", dragOver);
 
 // функции стакана
 cup.addEventListener("dragstart", dragStart);
@@ -179,6 +184,9 @@ function drop() {
       break;
     case "transfer_toBack":
       if (draggedElement === "cup") table_backDesk.append(cup);
+      break;
+    case "cups_container":
+      if (draggedElement === "cup") cups_container.append(cup);
       break;
   }
 }
@@ -437,15 +445,13 @@ transfer_toBack.addEventListener("dragover", dragOver);
 transfer_toBack.addEventListener("drop", drop);
 
 // цели -- идеи
-// 3. посмотреть можно ли оптимизировать присваивание событий для объектов (foreach)
-
-// на будущее: на стойку сзади можно добавить кнопку в виде книги -> это будет туториал по игре
-// создать визуальный эффект при наведении на зону переноса стакана между досками
-// дать пользователю "вылить" содержимое стакана
-// можно нарисовать какую-нибудь раковину и добавить на неё див для обнувления содержимого стакана
 // w🍓w
 
-// нужно написать список ассетов которые нужно нарисовать
+// добавить интерактивную книгу (туториал)
+// создать визуальный эффект при наведении на зону переноса стакана между досками
+// дать пользователю "вылить" содержимое стакана в раковину
+// добавить ожидание при включении кофеварки и кофемолки
+// оптимизировать выдачу событий
 
 // стакан
 // 1 - пустой
@@ -453,9 +459,11 @@ transfer_toBack.addEventListener("drop", drop);
 // 3 - капучино
 // 4 - латте
 // 5 - с молоком
-// кофеварка, поднос для стакана и молока, зону для темперинга
+// кофеварка, столешницу на задней доске
 
 // changelog
-// добавлены ассеты для кофеварки и темпера
-// очищен код во всех файлах от не нужных строк
-// css файл приведён в порядок, добавлены комментарии для навигации
+// добавлен фон для зоны темперинга и контейнера стакана и молока
+// добавлен ассет для раковины
+// изменено положение кнопок на приборах
+// исправлено расположение объектов в приборах
+// добавлена возможность поставить стакан обратно в контейнер стаканов

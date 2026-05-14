@@ -91,7 +91,7 @@ footer {
 #coffee_grinder,
 #tamper_zone,
 #cups_container {
-  border: 2px solid white;
+  /* border: 2px solid white; */
   position: absolute;
   bottom: 0;
   left: 0;
@@ -122,32 +122,58 @@ footer {
 
 #cups_container {
   width: 150px;
-  height: 50px;
-  margin-left: 550px;
-  contain: content;
+  height: 70px;
+  margin-left: 525px;
   display: flex;
-  gap: 10px;
 }
 
 #tamper_zone {
-  width: 90px;
-  height: 30px;
+  width: 155px;
+  height: 60px;
   margin-left: 375px;
+  background-image: url(./img/main_assets/tamper_zone.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 /* ====================СТИЛИ ИНСТРУМЕНТОВ ВНУТРИ ПРИБОРОВ================ */
 #coffee_maker #holder {
-  margin-left: 50px;
-  margin-bottom: 50px;
+  margin-left: 47px;
+  margin-bottom: 48px;
   object-position: center -33px;
 }
 
 #coffee_grinder #holder {
-  margin-left: 16px;
+  margin-left: 17.5px;
 }
 
 #tamper_zone #holder {
-  margin-left: 20px;
+  margin-left: 62px;
+  transform: translateY(15px);
+}
+
+#tamper_zone #tamper {
+  margin-left: 27.5px;
+  transform: translateY(-17px);
+}
+
+#cups_container #cup {
+  position: absolute;
+  left: 70px;
+}
+
+#cups_container .milk_box {
+  margin-left: 10px;
+  margin-top: 5px;
+}
+
+#table_backDesk #holder {
+  transform: translateY(20px);
+}
+
+#table_frontDesk #cup {
+  transform: translateY(-4px);
 }
 
 /* =====================ПЕРЕТАСКИВАЕМЫЕ ОБЪЕКТЫ======================= */
@@ -157,14 +183,14 @@ footer {
 }
 
 .cup {
-  width: 50px;
-  height: 50px;
+  width: 70px;
+  height: 70px;
   object-fit: contain;
 }
 
 .milk_box {
-  width: 50px;
-  height: 50px;
+  width: 70px;
+  height: 70px;
   object-fit: contain;
 }
 
@@ -191,11 +217,27 @@ footer {
   border-style: none;
   border-radius: 10px;
   position: absolute;
+  background-color: #7c7c7c;
+  border: rgb(71, 62, 62) solid 1px;
 }
 
 .btn:hover {
-  background-color: #87e25d;
+  background-color: #98c086;
   transition: 0.1s ease-out;
+}
+
+#coffee_maker .maker_btn {
+  width: 11px;
+  height: 11px;
+  left: 87px;
+  top: 43.1px;
+}
+
+#coffee_grinder .grinder_btn {
+  width: 15px;
+  height: 15px;
+  left: 49px;
+  top: 150px;
 }
 
 /* =====================ЗОНА ВЫДАЧИ ЗАКАЗОВ=================== */
