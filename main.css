@@ -41,7 +41,7 @@ footer {
   color: #c7a55b;
 }
 
-/* Слои для передней и задней стойки */
+/* ==================== ПЕРЕДНИЙ И ЗАДНИЙ ФОНЫ ========================= */
 .front_desk,
 .back_desk {
   position: absolute;
@@ -67,7 +67,6 @@ footer {
   pointer-events: none;
 }
 
-/* Состояния */
 .front_desk.inactive {
   opacity: 0;
   pointer-events: none;
@@ -87,11 +86,12 @@ footer {
   justify-content: flex-start;
 }
 
+/* ======================ПРИБОРЫ НА СТОЛЕ========================== */
 #coffee_maker,
 #coffee_grinder,
 #tamper_zone,
 #cups_container {
-  /* border: 2px solid white; */
+  border: 2px solid white;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -99,21 +99,47 @@ footer {
 }
 
 #coffee_maker {
-  width: 120px;
-  height: 100px;
-  margin-left: 55px;
-  background-color: rgb(75, 69, 69);
+  width: 200px;
+  height: 200px;
+  margin-left: 35px;
+  background-image: url(./img/main_assets/coffee_maker.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 #coffee_grinder {
   width: 120px;
   height: 250px;
-  margin-left: 220px;
+  margin-left: 250px;
   background-image: url(./img/main_assets/coffee_grinder.png);
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: center; /* 👈 добавляем центрирование */
-  /* background-position: center -35px; */
+  background-position: center;
+}
+
+/* ============ЗОНЫ В КОТОРЫХ РАСПОЛАГАЮТСЯ ПЕРЕТАСКИВАЕМЫЕ ОБЪЕКТЫ========= */
+
+#cups_container {
+  width: 150px;
+  height: 50px;
+  margin-left: 550px;
+  contain: content;
+  display: flex;
+  gap: 10px;
+}
+
+#tamper_zone {
+  width: 90px;
+  height: 30px;
+  margin-left: 375px;
+}
+
+/* ====================СТИЛИ ИНСТРУМЕНТОВ ВНУТРИ ПРИБОРОВ================ */
+#coffee_maker #holder {
+  margin-left: 50px;
+  margin-bottom: 50px;
+  object-position: center -33px;
 }
 
 #coffee_grinder #holder {
@@ -124,34 +150,11 @@ footer {
   margin-left: 20px;
 }
 
-#cups_container {
-  width: 150px;
-  height: 50px;
-  margin-left: 500px;
-  contain: content;
-  display: flex;
-  gap: 10px;
-}
-
-#tamper_zone {
-  width: 90px;
-  height: 30px;
-  margin-left: 350px;
-}
-
+/* =====================ПЕРЕТАСКИВАЕМЫЕ ОБЪЕКТЫ======================= */
 #holder {
   width: 80px;
   height: 80px;
 }
-
-/* .cup {
-  background-image: url(./img/main_assets/cup.png);
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  width: 50px;
-  height: 50px;
-} */
 
 .cup {
   width: 50px;
@@ -171,47 +174,16 @@ footer {
   left: 0;
 }
 
-.holder_in_maker {
-  background-color: #2b1e0f;
-  border: 2px solid white;
-  position: absolute;
-  bottom: 80%;
-  left: 47px;
+.tamper {
+  width: 55px;
+  height: 55px;
+  background-image: url(./img/main_assets/tamper.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
-.holder_in_grinder {
-  background-color: #2b1e0f;
-  border: 2px solid white;
-  position: absolute;
-  left: 28px;
-  bottom: 10%;
-}
-
-.holder_in_tamper_zone {
-  background-color: #2b1e0f;
-}
-
-.cup_in_maker {
-  width: 20px;
-  height: 50px;
-  background-color: rgb(236, 132, 132);
-  border: 2px solid red;
-  border-style: dashed;
-  position: absolute;
-  left: 47px;
-  bottom: 0;
-}
-
-.cup_filled {
-  background-color: rgb(136, 218, 136);
-  border: 2px solid green;
-  border-style: dashed;
-}
-
-.limited {
-  display: flex;
-  flex-direction: column;
-}
+/* ==================КНОПКИ ПРИБОРОВ======================= */
 
 .btn {
   width: 20px;
@@ -226,6 +198,7 @@ footer {
   transition: 0.1s ease-out;
 }
 
+/* =====================ЗОНА ВЫДАЧИ ЗАКАЗОВ=================== */
 #serving_zone {
   width: 200px;
   height: 250px;
@@ -241,10 +214,7 @@ footer {
   transition: all 0.2s;
 }
 
-/* кнопки переключения между досками */
-
-/* для кнопки перехода на заднюю доску */
-
+/* ==================КНОПКИ ДЛЯ ПЕРЕКЛЮЧЕНИЯ МЕЖДУ ДОСКАМИ=================== */
 #toBackBtn {
   position: absolute;
   bottom: 0px;
@@ -293,8 +263,6 @@ footer {
   top: -25%;
   left: -25%;
 }
-
-/* для кнопки перехода на переднюю доску */
 
 #toFrontBtn {
   position: absolute;
@@ -362,21 +330,11 @@ footer {
   margin-bottom: 25px;
 }
 
-.cup_on_table {
-  /*не используется*/
-  position: relative;
-}
-
-.holder_on_table {
-  /*не используется*/
-  position: relative;
-}
-
+/* ===============ЗОНЫ ПЕРЕТАСКИВАНИЯ СТАКАНА МЕЖДУ ДОСКАМИ=================== */
 #transfer_toFront {
   position: absolute;
   height: 50px;
   width: 300px;
-  /* border: 2px solid white; */
   top: 0px;
   left: 300px;
   display: flex;
@@ -388,17 +346,9 @@ footer {
   position: absolute;
   height: 15px;
   width: 300px;
-  /* border: 2px solid white; */
   bottom: 0px;
   left: 300px;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.tamper {
-  width: 20px;
-  height: 30px;
-  border: 2px solid white;
-  background-color: #26413e;
 }

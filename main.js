@@ -30,7 +30,6 @@ function make_coffee() {
     holder_obj.isEmpty === false &&
     holder_obj.isCoffeeTampered == true
   ) {
-    cup.classList.add("cup_filled");
     cup_obj.contains.push("кофе");
     cup_obj.checkCoffee();
   }
@@ -54,7 +53,7 @@ const holder_obj = {
 const cup_obj = {
   currentDrink: "",
   contains: [],
-  checkCoffee, // ссылка на функцию
+  checkCoffee, // ссылки на функцию
   resetCup,
 };
 
@@ -116,21 +115,7 @@ const tamper = document.getElementById("tamper");
 tamper.addEventListener("dragstart", dragStart);
 tamper.addEventListener("dragend", dragEnd);
 
-// функции перетаскиваемых объектов -------------------------
-// function dragStart() {
-//   if (this.classList.contains("cup")) {
-//     draggedElement = "cup";
-//   } else if (this.classList.contains("holder")) {
-//     draggedElement = "holder";
-//   } else if (this.classList.contains("milk_box")) {
-//     draggedElement = "milk_box";
-//   } else if (this.classList.contains("tamper")) {
-//     draggedElement = "tamper";
-//   }
-//   setTimeout(() => ((this.className = "invisible"), 0));
-// }
-
-function dragStart(e) {
+function dragStart() {
   if (this.classList.contains("cup")) {
     draggedElement = "cup";
   } else if (this.classList.contains("holder")) {
@@ -140,16 +125,6 @@ function dragStart(e) {
   } else if (this.classList.contains("tamper")) {
     draggedElement = "tamper";
   }
-
-  // // кастомная картинка
-  // const img = new Image();
-  // img.src = "./img/main_assets/cup.png";
-
-  // e.dataTransfer.setDragImage(img, 25, 25);
-
-  // setTimeout(() => {
-  //   this.classList.add("invisible");
-  // }, 0);
 }
 
 function dragEnd() {
@@ -162,14 +137,11 @@ function dragEnd() {
   } else if (draggedElement === "tamper") {
     this.classList = "tamper";
   }
-
-  this.classList.remove("invisible"); // убираем invisible если есть
 }
 
 // функции приборов (статичные) -----------------------
 function dragEnter(e) {
   e.preventDefault();
-  // зачем вот это я не знаю
 }
 
 function dragOver(e) {
@@ -231,11 +203,9 @@ function putIn_coffeeMaker(object) {
       holder_obj.isCoffeeTampered === true &&
       draggedElement === "holder"
     ) {
-      holder.classList = "holder_in_maker";
       coffee_maker.append(holder);
     }
   } else if (object === "cup") {
-    // cup.classList = "cup_in_maker";
     coffee_maker.append(cup);
   }
 }
@@ -247,7 +217,6 @@ function putIn_coffeeGrinder(object) {
       holder_obj.isCoffeeTampered === false &&
       draggedElement === "holder"
     ) {
-      holder.classList = "holder_in_grinder";
       coffee_grinder.append(holder);
     }
   }
@@ -260,7 +229,6 @@ function putIn_tamper_zone(object) {
       holder_obj.isCoffeeTampered === false &&
       draggedElement === "holder"
     ) {
-      holder.classList = "holder_in_tamper_zone";
       tamper_zone.append(holder);
     }
   }
@@ -281,10 +249,8 @@ function giveTo_servingZone() {
 
 function putOn_table_backDesk(object) {
   if (object === "cup") {
-    // cup.classList = "cup_on_table"; // не используется
     table_backDesk.append(cup);
   } else if (object === "holder") {
-    holder.classList = "holder_on_table"; // не используется
     table_backDesk.append(holder);
   }
 }
@@ -303,8 +269,6 @@ function resetCup() {
   cup_obj.contains = [];
   document.getElementById("cups_container").append(cup);
 }
-
-//
 
 // Получаем back_desk
 const backDesk = document.getElementById("back_desk");
@@ -473,19 +437,12 @@ transfer_toBack.addEventListener("dragover", dragOver);
 transfer_toBack.addEventListener("drop", drop);
 
 // цели -- идеи
-// 2. добавить комементарии ко всему
 // 3. посмотреть можно ли оптимизировать присваивание событий для объектов (foreach)
 
 // на будущее: на стойку сзади можно добавить кнопку в виде книги -> это будет туториал по игре
-// draggable = false , когда холдер в процессе действия
-// сделать общую функциб перетаскивания объекта в прибор (идея)
-// вид: moveTo([объект], [куда], [класс_объекта(для сравнения)])
-
 // создать визуальный эффект при наведении на зону переноса стакана между досками
-
 // дать пользователю "вылить" содержимое стакана
-// сделать проверку что бы нельзя было налить несколько раз кофе или молока
-
+// можно нарисовать какую-нибудь раковину и добавить на неё див для обнувления содержимого стакана
 // w🍓w
 
 // нужно написать список ассетов которые нужно нарисовать
@@ -496,10 +453,9 @@ transfer_toBack.addEventListener("drop", drop);
 // 3 - капучино
 // 4 - латте
 // 5 - с молоком
-// кофеварка, темпер, поднос для стакана и молока
+// кофеварка, поднос для стакана и молока, зону для темперинга
 
 // changelog
-// сделал так, что бы при влкючении страницы сначала показывалась передняя доска
-// странное увеличиение картинки при перемещении убрано
-// решение для проблемы с классами найдено
-// добавлены ассеты для кофемолки и всех состояний холдера
+// добавлены ассеты для кофеварки и темпера
+// очищен код во всех файлах от не нужных строк
+// css файл приведён в порядок, добавлены комментарии для навигации
