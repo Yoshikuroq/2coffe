@@ -11,14 +11,18 @@ function getRandomNumber(min, max) {
 function grind_coffee() {
   if (holder.parentNode.id === "coffee_grinder") {
     holder_obj.isEmpty = false;
-    holder.src = "./img/main_assets/holder_withCoffee.png";
+    holder.src = "./img/main_assets/holder/holder_withCoffee.png";
   }
 }
 
 function tamp_coffee(object) {
-  if (holder.parentNode.id === "tamper_zone" && object === "tamper") {
+  if (
+    holder.parentNode.id === "tamper_zone" &&
+    object === "tamper" &&
+    holder_obj.isEmpty === false
+  ) {
     holder_obj.isCoffeeTampered = true;
-    holder.src = "./img/main_assets/holder_tampered.png";
+    holder.src = "./img/main_assets/holder/holder_tampered.png";
   }
 }
 
@@ -37,7 +41,7 @@ function make_coffee() {
   if (holder.parentNode.id === "coffee_maker") {
     holder_obj.isEmpty = true;
     holder_obj.isCoffeeTampered = false;
-    holder.src = "./img/main_assets/holder_empty.png";
+    holder.src = "./img/main_assets/holder/holder_empty.png";
   }
 }
 
@@ -73,52 +77,27 @@ const coffee = [
   },
 ];
 
-// перетаскиваемый элемент
+// хранение перетаскиваемого элемента
 let draggedElement = null;
 
 // получение DOM-элементов
 
+// === перетаскиваемые элементы ===
 const holder = document.querySelector(".holder");
 const cup = document.querySelector(".cup");
+const tamper = document.getElementById("tamper");
+const milk_box = document.querySelector(".milk_box");
+
+// === статичные элементы ===
 const tamper_zone = document.getElementById("tamper_zone");
 const coffee_maker = document.getElementById("coffee_maker");
 const coffee_grinder = document.getElementById("coffee_grinder");
 const cups_container = document.getElementById("cups_container");
+const sink = document.getElementById("sink");
 
-// кнопки
-const grinder_btn = document.querySelector(".grinder_btn");
-grinder_btn.addEventListener("click", grind_coffee);
-
-const maker_btn = document.querySelector(".maker_btn");
-maker_btn.addEventListener("click", make_coffee);
-
-let dropSuccess = false; // флаг перемещения
-
-// добавление событий на начало перетаскивания и на конец
-holder.addEventListener("dragstart", dragStart);
-holder.addEventListener("dragend", dragEnd);
-holder.addEventListener("dragover", dragOver);
-holder.addEventListener("drop", drop);
-
-// функции контейнера стакана и молока
-cups_container.addEventListener("drop", drop);
-cups_container.addEventListener("dragover", dragOver);
-
-// функции стакана
-cup.addEventListener("dragstart", dragStart);
-cup.addEventListener("dragend", dragEnd);
-cup.addEventListener("dragover", dragOver);
-cup.addEventListener("drop", drop);
-
-// молоко
-const milk_box = document.querySelector(".milk_box");
-milk_box.addEventListener("dragstart", dragStart);
-milk_box.addEventListener("dragend", dragEnd);
-
-// темпер
-const tamper = document.getElementById("tamper");
-tamper.addEventListener("dragstart", dragStart);
-tamper.addEventListener("dragend", dragEnd);
+// кнопки приборов
+document.querySelector(".grinder_btn").addEventListener("click", grind_coffee);
+document.querySelector(".maker_btn").addEventListener("click", make_coffee);
 
 function dragStart() {
   if (this.classList.contains("cup")) {
@@ -165,7 +144,7 @@ function drop() {
       putIn_coffeeGrinder(draggedElement);
       break;
     case "tamper_zone":
-      putIn_tamper_zone(draggedElement);
+      if (draggedElement === "holder") tamper_zone.append(holder);
       break;
     case "cup":
       PutIn_milk(draggedElement);
@@ -188,20 +167,12 @@ function drop() {
     case "cups_container":
       if (draggedElement === "cup") cups_container.append(cup);
       break;
+    case "sink":
+      if (draggedElement === "cup") cup_obj.resetCup();
+      break;
   }
 }
 // ------------------------------------------------------------------------
-
-// сохранение приборов в массиве, что бы дать им события (дополнить в будущем по возможности)
-const obj = [coffee_maker, coffee_grinder, tamper_zone];
-
-// раздача событий на каждый прибор
-for (let i = 0; i < obj.length; i++) {
-  let object = obj[i];
-  object.addEventListener("dragenter", dragEnter);
-  object.addEventListener("dragover", dragOver);
-  object.addEventListener("drop", drop);
-}
 
 // функции для вставления перетаскиваемого объекта  -----------
 function putIn_coffeeMaker(object) {
@@ -226,18 +197,6 @@ function putIn_coffeeGrinder(object) {
       draggedElement === "holder"
     ) {
       coffee_grinder.append(holder);
-    }
-  }
-}
-
-function putIn_tamper_zone(object) {
-  if (object === "holder") {
-    if (
-      holder_obj.isEmpty === false &&
-      holder_obj.isCoffeeTampered === false &&
-      draggedElement === "holder"
-    ) {
-      tamper_zone.append(holder);
     }
   }
 }
@@ -357,8 +316,6 @@ function switchDay() {
 const serving_zone = document.getElementById("serving_zone");
 serving_zone.addEventListener("dragenter", servingZone_dragEnter);
 serving_zone.addEventListener("dragleave", servingZone_dragLeave);
-serving_zone.addEventListener("dragover", dragOver);
-serving_zone.addEventListener("drop", drop);
 
 function servingZone_dragEnter(e) {
   e.preventDefault();
@@ -387,13 +344,13 @@ function checkCoffee() {
   if (foundCoffee) {
     switch (foundCoffee.name) {
       case "эспрессо":
-        cup_obj.currentDrink = "эспрессо";
+        cup_obj.currentDrink = coffee[0].name;
         break;
       case "капучино":
-        cup_obj.currentDrink = "капучино";
+        cup_obj.currentDrink = coffee[1].name;
         break;
       case "латте":
-        cup_obj.currentDrink = "латте";
+        cup_obj.currentDrink = coffee[2].name;
         break;
     }
 
@@ -430,28 +387,64 @@ function switchToBack() {
 document.getElementById("toFrontBtn").addEventListener("click", switchToFront);
 document.getElementById("toBackBtn").addEventListener("click", switchToBack);
 
+// обе доски и зоны переноса между ними
 const table_backDesk = document.getElementById("table_backDesk");
-table_backDesk.addEventListener("dragover", dragOver);
-table_backDesk.addEventListener("drop", drop);
-
 const table_frontDesk = document.getElementById("table_frontDesk");
-
 const transfer_toFront = document.getElementById("transfer_toFront");
-transfer_toFront.addEventListener("dragover", dragOver);
-transfer_toFront.addEventListener("drop", drop);
-
 const transfer_toBack = document.getElementById("transfer_toBack");
-transfer_toBack.addEventListener("dragover", dragOver);
-transfer_toBack.addEventListener("drop", drop);
+
+// сохранение приборов в массиве, что бы дать им события [dragenter, dragover, drop]
+const obj = [
+  coffee_maker,
+  coffee_grinder,
+  tamper_zone,
+  cups_container,
+  cup,
+  holder,
+  serving_zone,
+  table_backDesk,
+  transfer_toFront,
+  transfer_toBack,
+  sink,
+];
+
+// раздача событий на каждый прибор
+for (let i = 0; i < obj.length; i++) {
+  let object = obj[i];
+  object.addEventListener("dragenter", dragEnter);
+  object.addEventListener("dragover", dragOver);
+  object.addEventListener("drop", drop);
+}
+
+// сохранение перетаскиваемых элементов в массиве, что бы дать им события [dragstart, dragend]
+const obj_2 = [holder, cup, milk_box, tamper];
+
+// раздача событий на каждый перетаскиваемый элемент
+for (let i = 0; i < obj_2.length; i++) {
+  let object = obj_2[i];
+  object.addEventListener("dragstart", dragStart);
+  object.addEventListener("dragend", dragEnd);
+}
 
 // цели -- идеи
 // w🍓w
+// добавление звуков для кофеварки, кофемолки, темперинга,
+// во время наполнения стакана кофе, молоком, во время выливания содержимого в раковину
+
+// создать визуальный эффект при наведении на зону переноса стакана между досками
+// добавить ожидание при включении кофеварки и кофемолки
+
+// добавить ассеты клиентов
 
 // добавить интерактивную книгу (туториал)
-// создать визуальный эффект при наведении на зону переноса стакана между досками
-// дать пользователю "вылить" содержимое стакана в раковину
-// добавить ожидание при включении кофеварки и кофемолки
-// оптимизировать выдачу событий
+// сделать на бек деск заметку с заказом
+// диалог при появлении клиента
+// диалог при выдаче заказа
+// задержка перед появлением клиента
+
+// сделать див блок рядом с клиентом, фон которого будет в виде облака из манги
+// сделать последовательные диалоги
+// ассет облачка диалога
 
 // стакан
 // 1 - пустой
@@ -462,8 +455,7 @@ transfer_toBack.addEventListener("drop", drop);
 // кофеварка, столешницу на задней доске
 
 // changelog
-// добавлен фон для зоны темперинга и контейнера стакана и молока
-// добавлен ассет для раковины
-// изменено положение кнопок на приборах
-// исправлено расположение объектов в приборах
-// добавлена возможность поставить стакан обратно в контейнер стаканов
+// систематизация в ./img
+// оптимизация выдачи событий
+// правильное расопложение холдера и возможность добавления в зону темперинга, исправление условий
+// добавлена возможность вылить содержимое стакана
