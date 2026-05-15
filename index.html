@@ -9,17 +9,23 @@
   </head>
   <body>
     <div class="game_container">
+      <!-- игровой фон -->
       <div
         id="coffeeCanvas"
         style="width: 900px; height: 550px"
         class="game_screen"
       >
+        <!-- передняя доска -->
         <div id="front_desk" class="front_desk">
-          <div id="serving_zone"></div>
+          <div id="serving_zone">
+            <img src="./img/clients/azula.png" class="client_img" />
+          </div>
           <button id="toBackBtn"></button>
           <div id="table_frontDesk"></div>
           <div id="transfer_toBack"></div>
         </div>
+
+        <!-- задняя доска -->
         <div id="back_desk" class="back_desk">
           <!-- кофеварка -->
           <div id="coffee_maker">
@@ -46,14 +52,16 @@
             />
           </div>
 
-          <!-- пустые стаканы -->
+          <!-- зона стаканов -->
           <div id="cups_container">
+            <!-- стакан -->
             <img
               id="cup"
               class="cup"
               src="./img/main_assets/cup/cup.png"
               draggable="true"
             />
+            <!-- коробка с молоком -->
             <img
               class="milk_box"
               src="./img/main_assets/milk.png"
@@ -65,7 +73,12 @@
           <!-- зона перетаскивания -->
           <div id="transfer_toFront"></div>
           <button id="toFrontBtn"></button>
+          <!-- раковина -->
           <div id="sink"></div>
+
+          <!-- книжная полка и заметка на стене -->
+          <div id="book"></div>
+          <div id="note"><p id="note_text"></p></div>
         </div>
       </div>
       <footer>Strawwbery Cafe | cozy & chill</footer>

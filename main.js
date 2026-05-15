@@ -94,6 +94,11 @@ const coffee_maker = document.getElementById("coffee_maker");
 const coffee_grinder = document.getElementById("coffee_grinder");
 const cups_container = document.getElementById("cups_container");
 const sink = document.getElementById("sink");
+const infoBook = document.getElementById("book");
+
+// заметки заказов
+const note = document.getElementById("note");
+const note_text = document.getElementById("note_text");
 
 // кнопки приборов
 document.querySelector(".grinder_btn").addEventListener("click", grind_coffee);
@@ -232,6 +237,7 @@ function PutIn_milk(object) {
 //  -------------------------------------------------------------
 
 function resetCup() {
+  cup.src = "./img/main_assets/cup/cup.png";
   cup_obj.currentDrink = "";
   cup_obj.contains = [];
   document.getElementById("cups_container").append(cup);
@@ -289,6 +295,7 @@ function getRandomCustomerForDay(day) {
   let selectedCustomer = availableCustomers[randomIndex];
   selectedCustomer.wasToday = true;
   const order = selectedCustomer.makeOrder();
+  note_text.innerText = order;
   console.log(`Сегодняшний день: ${today}`);
   console.log(`Клиент: ${selectedCustomer.name}, Заказ: ${order}`);
   return selectedCustomer;
@@ -345,17 +352,21 @@ function checkCoffee() {
     switch (foundCoffee.name) {
       case "эспрессо":
         cup_obj.currentDrink = coffee[0].name;
+        cup.src = "./img/main_assets/cup/cup_espresso.png";
         break;
       case "капучино":
         cup_obj.currentDrink = coffee[1].name;
+        cup.src = "./img/main_assets/cup/cappuccino.png";
         break;
       case "латте":
         cup_obj.currentDrink = coffee[2].name;
+        cup.src = "./img/main_assets/cup/latte.png";
         break;
     }
 
     console.log(`Приготовлен: ${foundCoffee.name}`);
   } else {
+    cup.src = "./img/main_assets/cup/cup_withMilk.png";
     console.log(`Содержимое стакана: ${cup_obj.contains}`);
   }
 }
@@ -431,31 +442,23 @@ for (let i = 0; i < obj_2.length; i++) {
 // добавление звуков для кофеварки, кофемолки, темперинга,
 // во время наполнения стакана кофе, молоком, во время выливания содержимого в раковину
 
-// создать визуальный эффект при наведении на зону переноса стакана между досками
-// добавить ожидание при включении кофеварки и кофемолки
-
 // добавить ассеты клиентов
 
-// добавить интерактивную книгу (туториал)
-// сделать на бек деск заметку с заказом
 // диалог при появлении клиента
 // диалог при выдаче заказа
 // задержка перед появлением клиента
+// добавить ожидание при включении кофеварки и кофемолки
 
 // сделать див блок рядом с клиентом, фон которого будет в виде облака из манги
 // сделать последовательные диалоги
 // ассет облачка диалога
 
-// стакан
-// 1 - пустой
-// 2 - эспрессо
-// 3 - капучино
-// 4 - латте
-// 5 - с молоком
-// кофеварка, столешницу на задней доске
+// столешница на задней доске
 
 // changelog
-// систематизация в ./img
-// оптимизация выдачи событий
-// правильное расопложение холдера и возможность добавления в зону темперинга, исправление условий
-// добавлена возможность вылить содержимое стакана
+// добавлены ассеты для всех состояний стакана
+// добавлена ассеты кофеварки, полки с книгой, заметки
+// все дивы выравнены в соответствии новым фоном
+// добавлены дивы для книги и заметок
+// добавлено отображение заказа в заметке
+// добавлен клиент "Азула"
