@@ -306,7 +306,13 @@ footer {
   object-position: center 50px;
   position: absolute;
   bottom: 0px;
-  left: -18px;
+  left: -24px;
+}
+
+.client_deanWinchester {
+  position: absolute;
+  bottom: 1px;
+  left: -24px;
 }
 
 /* =====СКРЫТЬ КЛИЕНТА ПРИ ВЫДАЧЕ ЗАКАЗА===== */
@@ -318,16 +324,18 @@ footer {
 .dialog {
   position: absolute;
   bottom: 5px;
-  left: 28%;
+  left: 27%;
   background-color: black;
   height: 70px;
-  width: 400px;
+  width: 440px;
   border: white solid 3px;
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 100;
 
+  /* анимация */
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -345,13 +353,16 @@ footer {
   visibility: hidden;
 }
 
-/*  */
 .dialog_client {
   position: absolute;
   font-weight: bold;
   left: 0;
   top: 0;
   transform: translateY(-25px);
+}
+
+#dialog #dialog_text {
+  margin-left: 12px;
 }
 
 /* ==================КНОПКИ ДЛЯ ПЕРЕКЛЮЧЕНИЯ МЕЖДУ ДОСКАМИ=================== */
