@@ -95,6 +95,7 @@ const coffee_grinder = document.getElementById("coffee_grinder");
 const cups_container = document.getElementById("cups_container");
 const sink = document.getElementById("sink");
 const infoBook = document.getElementById("book");
+const serving_zone = document.getElementById("serving_zone");
 
 // заметки заказов
 const note = document.getElementById("note");
@@ -209,14 +210,17 @@ function putIn_coffeeGrinder(object) {
 function giveTo_servingZone() {
   if (currentCustomer.currentOrder === cup_obj.currentDrink) {
     console.log("Правильный напиток! =======================");
-    getRandomCustomerForDay(today);
+    document.getElementById("client").classList.add("hide_client");
+    note_text.innerText = "";
+    delay(5, () => getRandomCustomerForDay(today));
     cup_obj.resetCup();
   } else {
     console.log("Неправильный напиток! =====================");
-    getRandomCustomerForDay(today);
+    document.getElementById("client").classList.add("hide_client");
+    note_text.innerText = "";
+    delay(5, () => getRandomCustomerForDay(today));
     cup_obj.resetCup();
   }
-  serving_zone.classList.remove("hover_effect"); // убрать в будущем
 }
 
 function putOn_table_backDesk(object) {
@@ -246,11 +250,38 @@ function resetCup() {
 // Получаем back_desk
 const backDesk = document.getElementById("back_desk");
 
+// ===============================================================
+// Показать диалог с текстом
+function showDialog(clientName, text, duration = 3000) {
+  const dialog = document.getElementById("dialog");
+  const dialogText = document.getElementById("dialog_text");
+  const dialogClient = document.getElementById("dialog_client");
+
+  dialogClient.textContent = clientName;
+  dialogText.textContent = text;
+  dialog.classList.add("show");
+  dialog.classList.remove("hide_dialog");
+
+  // Автоматически скрыть
+  setTimeout(() => {
+    hideDialog();
+  }, duration);
+}
+
+// Скрыть диалог
+function hideDialog() {
+  const dialog = document.getElementById("dialog");
+  dialog.classList.remove("show");
+  dialog.classList.add("hide_dialog");
+}
+
 // конструктор клиентов -----------------------
 class Customer {
-  constructor(id, name, coffeeList, visitDays) {
+  constructor(id, name, coffeeList, visitDays, src, nameClass) {
     this.id = id;
     this.name = name;
+    this.src = src;
+    this.nameClass = nameClass;
     this.coffeeList = coffeeList; // массив кофе: ["эспрессо", "капучино"]
     this.visitDays = visitDays; // массив дней: ["пн", "вт", "ср"]
     this.currentOrder = null;
@@ -269,10 +300,35 @@ class Customer {
 }
 //  -------------------------------------------
 
+// таймер для появления клиентов
+let customerTimer = null;
+
+function delay(seconds, func) {
+  if (customerTimer) clearTimeout(customerTimer);
+  customerTimer = setTimeout(() => {
+    func();
+    customerTimer = null;
+  }, seconds * 1000);
+}
+
 // массив с клиентами
 const customers = [
-  new Customer(1, "Анастасия", ["эспрессо", "капучино"], ["пн", "ср", "пт"]),
-  new Customer(2, "Михаил", ["латте", "капучино"], ["пн", "ср"]),
+  new Customer(
+    1,
+    "Принцесса Азула",
+    ["эспрессо", "капучино"],
+    ["пн", "ср", "пт"],
+    "./img/clients/azula.png",
+    "client_azula"
+  ),
+  new Customer(
+    2,
+    "Шрек",
+    ["латте", "капучино"],
+    ["пн", "ср"],
+    "./img/clients/shrek.png",
+    "client_shrek"
+  ),
   new Customer(3, "Алексей", ["латте", "капучино"], ["пн", "чт"]),
 ];
 
@@ -294,8 +350,20 @@ function getRandomCustomerForDay(day) {
   const randomIndex = getRandomNumber(0, availableCustomers.length - 1);
   let selectedCustomer = availableCustomers[randomIndex];
   selectedCustomer.wasToday = true;
+
+  // отображение заказа
   const order = selectedCustomer.makeOrder();
   note_text.innerText = order;
+
+  //
+  const client = document.getElementById("client");
+  if (client) {
+    client.classList = selectedCustomer.nameClass;
+    client.src = selectedCustomer.src;
+    showDialog(selectedCustomer.name, "Здравствуйте!", 3000);
+  }
+
+  //
   console.log(`Сегодняшний день: ${today}`);
   console.log(`Клиент: ${selectedCustomer.name}, Заказ: ${order}`);
   return selectedCustomer;
@@ -318,19 +386,6 @@ function switchDay() {
   }
   customers.forEach((customer) => customer.resetForNewDay());
   return today;
-}
-
-const serving_zone = document.getElementById("serving_zone");
-serving_zone.addEventListener("dragenter", servingZone_dragEnter);
-serving_zone.addEventListener("dragleave", servingZone_dragLeave);
-
-function servingZone_dragEnter(e) {
-  e.preventDefault();
-  serving_zone.classList.add("hover_effect"); // убрать в будущем
-}
-
-function servingZone_dragLeave() {
-  serving_zone.classList.remove("hover_effect"); // убрать в будущем
 }
 
 // функция проверки кофе
@@ -443,10 +498,10 @@ for (let i = 0; i < obj_2.length; i++) {
 // во время наполнения стакана кофе, молоком, во время выливания содержимого в раковину
 
 // добавить ассеты клиентов
+// пример: кого-то из сверхестественного
 
 // диалог при появлении клиента
 // диалог при выдаче заказа
-// задержка перед появлением клиента
 // добавить ожидание при включении кофеварки и кофемолки
 
 // сделать див блок рядом с клиентом, фон которого будет в виде облака из манги
@@ -454,11 +509,11 @@ for (let i = 0; i < obj_2.length; i++) {
 // ассет облачка диалога
 
 // столешница на задней доске
+// добавить календарь
 
 // changelog
-// добавлены ассеты для всех состояний стакана
-// добавлена ассеты кофеварки, полки с книгой, заметки
-// все дивы выравнены в соответствии новым фоном
-// добавлены дивы для книги и заметок
-// добавлено отображение заказа в заметке
-// добавлен клиент "Азула"
+// добавлена задержка перед появлением клиента
+// добавлено отображение клиентов
+// убран ненужный код
+// добавлены новые значения для конструктора клиентов
+// добавлено появление и скрытие диалогов с дефолтным значением

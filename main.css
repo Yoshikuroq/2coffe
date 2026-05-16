@@ -293,16 +293,65 @@ footer {
   margin-top: 210px;
 }
 
-.hover_effect {
-  background-color: #87e25d;
-  transition: all 0.2s;
-}
-
-/* ====ОТОБРАЖЕНИЕ КЛИЕНТА В ЗОНЕ===== */
-.client_img {
+/* =========ОТОБРАЖЕНИЕ КЛИЕНТОВ В ЗОНЕ======== */
+.client_azula {
   position: absolute;
   left: -28px;
   top: -7px;
+}
+
+.client_shrek {
+  width: 256px;
+  height: 350px;
+  object-position: center 50px;
+  position: absolute;
+  bottom: 0px;
+  left: -18px;
+}
+
+/* =====СКРЫТЬ КЛИЕНТА ПРИ ВЫДАЧЕ ЗАКАЗА===== */
+.hide_client {
+  display: none;
+}
+
+/* ====================ОТОБРАЖЕНИЕ ДИАЛОГОВ КЛИЕНТОВ ================== */
+.dialog {
+  position: absolute;
+  bottom: 5px;
+  left: 28%;
+  background-color: black;
+  height: 70px;
+  width: 400px;
+  border: white solid 3px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Класс для показа */
+.dialog.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Класс для скрытия */
+.dialog.hide_dialog {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/*  */
+.dialog_client {
+  position: absolute;
+  font-weight: bold;
+  left: 0;
+  top: 0;
+  transform: translateY(-25px);
 }
 
 /* ==================КНОПКИ ДЛЯ ПЕРЕКЛЮЧЕНИЯ МЕЖДУ ДОСКАМИ=================== */
